@@ -2,6 +2,7 @@ import jwt from 'jsonwebtoken';
 import { promisify } from 'util';
 import AppError from '../managers/AppError.js';
 import User from '../models/userModel.js';
+import Product from '../models/productModel.js';
 import catchAsync from '../managers/catchAsync.js';
 import envHandler from '../managers/envHandler.js';
 import logger from '../logs/logger.js';
@@ -39,23 +40,15 @@ export const protect = catchAsync(async (req, res, next) => {
   next();
 });
 
-export const restrictTo =
-  (...roles) =>
-  (req, res, next) => {
-    if (!roles.includes(req.user.role))
-      return next(
-        new AppError(
-          'You do not have the permission to perform this action',
-          403
-        )
-      );
-    next();
-  };
-
-export const adminOnly = (req, res, next) => {
-  if (!req.user.admin)
-    return next(
-      new AppError('You do not have the permission to perform this action', 403)
+export const userProductProtect = catchAsync(async (req, res, next) => {
+  const product = await Product.findById(req.params.id);
+  if (req.user.id !== product.listedBy) {
+    logger.protect(
+      `Non-modifying user entry attempt. \nAttempting User: ${req.user.id}\nTrying to access: ${req.user.userID}\nAction: ${req.originalUrl}`
     );
+    return next(
+      AppError('You do not have the permission to perform this action', 403)
+    );
+  }
   next();
-};
+});
