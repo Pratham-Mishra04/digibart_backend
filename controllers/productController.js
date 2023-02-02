@@ -1,7 +1,13 @@
 import fs from 'fs';
 import catchAsync from '../managers/catchAsync.js';
 import Product from '../models/productModel.js';
-import { updateDoc, getDoc, createDoc } from '../utils/HandlerFactory.js';
+import Stack from '../models/stackModel.js';
+import {
+  updateDoc,
+  getDoc,
+  createDoc,
+  deleteDoc,
+} from '../utils/HandlerFactory.js';
 
 export const getProduct = getDoc(Product);
 
@@ -23,3 +29,17 @@ export const deleteProduct = catchAsync(async (req, res, next) => {
     data: null,
   });
 });
+
+export const makeStack = catchAsync(async (req, res, next) => {
+  const stack = await Stack.create({
+    user: req.user.id,
+    products: req.body.products,
+  });
+  res.status(201).json({
+    status: 'success',
+    requestedAt: req.requestedAt,
+    data: stack,
+  });
+});
+
+export const deleteStack = deleteDoc(Stack);

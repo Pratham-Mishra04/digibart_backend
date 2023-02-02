@@ -48,7 +48,7 @@ export const resizeProductPics = (req, res, next) => {
 
     resizePic(picPath, toPath, 1280, 720);
 
-    resizedImgs.push(toPath);
+    resizedImgs.push(`products/images/${toPath.split('/')[3]}`);
   });
 
   req.body.images = resizedImgs;

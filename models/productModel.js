@@ -1,4 +1,5 @@
 import mongoose from 'mongoose';
+import calculateCost from '../utils/essentials/costCalculator.js';
 
 const productSchema = new mongoose.Schema({
   title: String,
@@ -12,22 +13,29 @@ const productSchema = new mongoose.Schema({
     type: Date,
     default: Date.now(),
   },
-  price: Number,
+  mrp: Number,
+  estimatedPrice: Number,
   category: String,
-    isPurchased: {
-      type: Boolean,
-      default: false,
-    },
-    purchasedAt: Date,
-    purchasedBy: {
-      type: mongoose.Schema.Types.ObjectId,
-      ref: 'User',
-    },
-    lat:String,
-    long:String
+  isPurchased: {
+    type: Boolean,
+    default: false,
+  },
+  age: Number,
+  purchasedAt: Date,
+  purchasedBy: {
+    type: mongoose.Schema.Types.ObjectId,
+    ref: 'User',
+  },
+  lat: String,
+  long: String,
 });
 
 productSchema.index({ price: 1 });
+
+productSchema.pre('save', function (next) {
+  this.estimatedPrice = calculateCost(this);
+  next();
+});
 
 const Product = mongoose.model('Product', productSchema);
 

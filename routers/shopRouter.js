@@ -4,7 +4,6 @@ import {
   getAllProducts,
   getUserProducts,
   getBoughtProducts,
-
 } from '../controllers/shopController.js';
 
 const shopRouter = express.Router();
@@ -13,6 +12,6 @@ shopRouter.route('/').post(protect, getAllProducts);
 
 shopRouter.route('/pastOrders').get(protect, getBoughtProducts);
 
-shopRouter.route('/listed').get(protect, getUserProducts);
+shopRouter.route('/listed').post(protect, getUserProducts);
 
 export default shopRouter;

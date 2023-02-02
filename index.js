@@ -27,7 +27,11 @@ app.use(express.json());
 
 app.use(cors());
 
-app.use(helmet());
+app.use(
+  helmet({
+    crossOriginResourcePolicy: false,
+  })
+);
 app.use(ExpressMongoSanitize());
 
 app.use(express.static(path.join(__dirname, 'public')));

@@ -1,15 +1,13 @@
 import catchAsync from '../managers/catchAsync.js';
 import Product from '../models/productModel.js';
 import APIFeatures from '../utils/APIFeatures.js';
-import inDistance from '../utils/distanceCalculator.js';
+import inDistance from '../utils/essentials/distanceCalculator.js';
 
 export const getAllProducts = catchAsync(async (req, res, next) => {
   const features = new APIFeatures(
     Product.find({ listedBy: { $ne: req.user.id } }),
     req.query
   );
-
-  console.log(req.query)
 
   features.filter().sort().fields().paginator().search();
   const docs = await features.query;

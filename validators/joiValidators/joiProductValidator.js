@@ -1,5 +1,4 @@
 import Joi from 'joi';
-import path from 'path';
 import fs from 'fs';
 import catchAsync from '../../managers/catchAsync.js';
 
@@ -9,7 +8,8 @@ const joiProductCreateSchema = Joi.object({
   description: Joi.string(),
   listedBy: Joi.string().required(),
   listedAt: Joi.forbidden(),
-  price: Joi.number().required(),
+  mrp: Joi.number().required(),
+  estimatedPrice:Joi.forbidden(),
   category: Joi.string().required(),
   lat:Joi.string().required(),
   long:Joi.string().required(),
@@ -24,7 +24,8 @@ const joiProductUpdateSchema = Joi.object({
   description: Joi.string(),
   listedBy: Joi.forbidden(),
   listedAt: Joi.forbidden(),
-  price: Joi.number(),
+  mrp: Joi.number(),
+  estimatedPrice:Joi.forbidden(),
   category: Joi.string(),
   isPurchased: Joi.forbidden(),
   purchasedAt: Joi.forbidden(),
