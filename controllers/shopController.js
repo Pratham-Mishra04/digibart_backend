@@ -1,5 +1,6 @@
 import catchAsync from '../managers/catchAsync.js';
 import Product from '../models/productModel.js';
+import Stack from '../models/stackModel.js';
 import APIFeatures from '../utils/APIFeatures.js';
 import inDistance from '../utils/essentials/distanceCalculator.js';
 
@@ -26,19 +27,39 @@ export const getAllProducts = catchAsync(async (req, res, next) => {
       )
         distanceDocs.push(el);
     });
+
+    const filteredStacks = [];
+
+    distanceDocs.forEach(async (el) => {
+      const stacks = await Stack.find({});
+      stacks.forEach((stack) => {
+        if (stack.products.includes(el)) filteredStacks.push(stack);
+      });
+    });
+
+    res.status(200).json({
+      status: 'success',
+      results: distanceDocs.length,
+      requestedAt: req.requestedAt,
+      data: { distanceDocs, filteredStacks },
+    });
+  } else {
+    const filteredStacks = [];
+
+    docs.forEach(async (el) => {
+      const stacks = await Stack.find({});
+      stacks.forEach((stack) => {
+        if (stack.products.includes(el)) filteredStacks.push(stack);
+      });
+    });
+
     res.status(200).json({
       status: 'success',
       results: docs.length,
       requestedAt: req.requestedAt,
-      data: distanceDocs,
+      data: { docs, filteredStacks },
     });
-  } else
-    res.status(200).json({
-      status: 'success',
-      results: docs.length,
-      requestedAt: req.requestedAt,
-      data: docs,
-    });
+  }
 });
 
 export const getUserProducts = catchAsync(async (req, res, next) => {
@@ -48,21 +69,30 @@ export const getUserProducts = catchAsync(async (req, res, next) => {
   );
 
   features.filter().sort().fields().paginator();
-  const docs = await features.query;
+  const products = await features.query;
+
+  const filteredStacks = [];
+
+  filteredStacks.forEach(async (el) => {
+    const stacks = await Stack.find({});
+    stacks.forEach((stack) => {
+      if (stack.products.includes(el)) filteredStacks.push(stack);
+    });
+  });
 
   res.status(200).json({
     status: 'success',
-    results: docs.length,
+    results: products.length,
     requestedAt: req.requestedAt,
-    data: docs,
+    data: { products, filteredStacks },
   });
 });
 
 export const getBoughtProducts = catchAsync(async (req, res, next) => {
   const features = new APIFeatures(
     Product.find({
-        isPurchased: true,
-        purchasedBy: req.user.id,
+      isPurchased: true,
+      purchasedBy: req.user.id,
     }),
     req.query
   );

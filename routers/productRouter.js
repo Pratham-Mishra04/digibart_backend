@@ -3,7 +3,9 @@ import { protect, userProductProtect } from '../middlewares/authMiddlewares.js';
 import {
   addProduct,
   deleteProduct,
+  deleteStack,
   getProduct,
+  makeStack,
   updateProduct,
 } from '../controllers/productController.js';
 import { productImgUploadParserer } from '../utils/parserers/imageUploadParserer.js';
@@ -32,5 +34,19 @@ productRouter
   .get(protect, getProduct)
   .patch(protect, userProductProtect, joiProductUpdateValidator, updateProduct)
   .delete(protect, userProductProtect, deleteProduct);
+
+  productRouter
+  .route('/stack')
+  .post(
+    protect,
+    makeStack
+  );
+
+  productRouter
+  .route('/stack/:id')
+  .delete(
+    protect,
+    deleteStack
+  );
 
 export default productRouter;

@@ -31,6 +31,14 @@ const orderSchema = new mongoose.Schema(
       type: Boolean,
       default: false,
     },
+    stackOfLister:{
+      type: mongoose.Schema.Types.ObjectId,
+        ref: 'Stack',
+    },
+    stackOfPlacer:{
+      type: mongoose.Schema.Types.ObjectId,
+        ref: 'Stack',
+    },
     status:{
       type:String,
       enum:['placed', 'canceled', 'accepted', 'declined', 'received', 'completed']

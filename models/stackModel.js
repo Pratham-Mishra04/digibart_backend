@@ -12,6 +12,10 @@ const stackSchema = new mongoose.Schema(
         ref: 'Product',
       },
     ],
+    isPurchased: {
+      type: Boolean,
+      default: false,
+    },
   },
   {
     virtuals: true,

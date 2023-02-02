@@ -2,6 +2,7 @@ import catchAsync from '../managers/catchAsync';
 import Order from '../models/orderModel';
 import AppError from '../managers/AppError.js';
 import Product from '../models/productModel';
+import Stack from '../models/stackModel';
 
 export const placeOrder = catchAsync(async (req, res, next) => {
   const order = await Order.create({
@@ -9,6 +10,8 @@ export const placeOrder = catchAsync(async (req, res, next) => {
     placedBy: req.body.placedBy,
     productsByLister: req.body.productsByLister,
     productsByPlacer: req.body.productsByPlacer,
+    stackOfLister: req.body.stackOfLister,
+    stackOfPlacer: req.body.stackOfPlacer,
     status: 'placed',
   });
   res.status(201).json({
@@ -49,6 +52,14 @@ export const acceptOrder = catchAsync(async (req, res, next) => {
       new: true,
     }
   );
+  if (order.stackOfLister)
+    await Stack.findByIdAndUpdate(order.stackOfLister, {
+      isPurchased: true,
+    });
+  if (order.stackOfPlacer)
+    await Stack.findByIdAndUpdate(order.stackOfPlacer, {
+      isPurchased: true,
+    });
   res.status(200).json({
     status: 'success',
     requestedAt: req.requestedAt,
