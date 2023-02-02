@@ -6,17 +6,12 @@ import {
 } from '../validators/joiValidators/joiUserValidator.js';
 import { profilePicUploadParserer } from '../utils/parserers/imageUploadParserer.js';
 import { resizeProfilePic } from '../utils/resizePic.js';
+import userCheck from '../validators/userCheck.js';
 
 const userRouter = express.Router();
 
 userRouter.post('/login', login);
 
-userRouter.post(
-  '/signup',
-  profilePicUploadParserer,
-  joiUserCreateValidator,
-  resizeProfilePic,
-  signup
-);
+userRouter.post('/signup', joiUserCreateValidator, userCheck,signup);
 
 export default userRouter;
