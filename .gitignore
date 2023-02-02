@@ -2,3 +2,6 @@
 /node_modules
 /public
 /dev_scripts
+/logs/error.log
+/logs/info.log
+/logs/protect.log
