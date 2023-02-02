@@ -14,6 +14,8 @@ import {
   unhandledRejectionManager,
 } from './managers/baseErrorManager.js';
 import envHandler from './managers/envHandler.js';
+import productRouter from './routers/productRouter.js';
+import shopRouter from './routers/shopRouter.js';
 
 uncaughtExceptionManager;
 
@@ -46,6 +48,8 @@ app.use((req, res, next) => {
 });
 
 app.use('/users', userRouter);
+app.use('/products', productRouter);
+app.use('/shop', shopRouter);
 
 app.all('*', (req, res, next) => {
   next(new AppError(`Cannot find ${req.originalUrl}`, 404));

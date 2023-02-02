@@ -9,7 +9,7 @@ import {
 
 const shopRouter = express.Router();
 
-shopRouter.route('/').get(protect, getAllProducts);
+shopRouter.route('/').post(protect, getAllProducts);
 
 shopRouter.route('/pastOrders').get(protect, getBoughtProducts);
 

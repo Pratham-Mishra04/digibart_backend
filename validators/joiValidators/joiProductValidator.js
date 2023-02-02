@@ -11,7 +11,11 @@ const joiProductCreateSchema = Joi.object({
   listedAt: Joi.forbidden(),
   price: Joi.number().required(),
   category: Joi.string().required(),
-  purchaseHistory: Joi.forbidden(),
+  lat:Joi.string().required(),
+  long:Joi.string().required(),
+  isPurchased: Joi.forbidden(),
+  purchasedAt: Joi.forbidden(),
+  purchasedBy: Joi.forbidden(),
 });
 
 const joiProductUpdateSchema = Joi.object({
@@ -22,7 +26,9 @@ const joiProductUpdateSchema = Joi.object({
   listedAt: Joi.forbidden(),
   price: Joi.number(),
   category: Joi.string(),
-  purchaseHistory: Joi.forbidden(),
+  isPurchased: Joi.forbidden(),
+  purchasedAt: Joi.forbidden(),
+  purchasedBy: Joi.forbidden(),
 });
 
 export const joiProductCreateValidator = catchAsync(async (req, res, next) => {

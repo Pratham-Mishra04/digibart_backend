@@ -6,9 +6,9 @@ export const multerProfilePicDiskStorage = multer.diskStorage({
     callback(null, `./public/users/profilePics`);
   },
   filename(req, file, callback) {
-    const name = `${req.body.username}-${Date.now()}${path.extname(
-      file.originalname
-    )}`;
+    const name = `${
+      req.body.username ? req.body.username : req.user.username
+    }-${Date.now()}${path.extname(file.originalname)}`;
     req.body[`${file.fieldname}`] = name;
     callback(null, name);
   },

@@ -14,7 +14,6 @@ const productSchema = new mongoose.Schema({
   },
   price: Number,
   category: String,
-  purchaseHistory: {
     isPurchased: {
       type: Boolean,
       default: false,
@@ -24,11 +23,8 @@ const productSchema = new mongoose.Schema({
       type: mongoose.Schema.Types.ObjectId,
       ref: 'User',
     },
-  },
-  location:{
     lat:String,
     long:String
-  }
 });
 
 productSchema.index({ price: 1 });

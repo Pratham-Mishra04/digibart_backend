@@ -34,7 +34,7 @@ const joiUserUpdateSchema = Joi.object({
   profilePic: Joi.string(),
   password: Joi.forbidden(),
   confirmPassword: Joi.forbidden(),
-  phoneNo: Joi.string().custom(async (value, helper) => {
+  phoneNo: Joi.string().custom((value, helper) => {
     if (!isValidNumber(value))
       return helper.message('Enter a valid phone number');
   }),
@@ -51,6 +51,7 @@ export const joiUserCreateValidator = catchAsync(async (req, res, next) => {
 });
 
 export const joiUserUpdateValidator = catchAsync(async (req, res, next) => {
+  console.log(req.files)
   await joiUserUpdateSchema.validateAsync(req.body).catch((error) => {
     if (req.file) {
       const picPath = `${req.file.destination}/${req.file.filename}`;

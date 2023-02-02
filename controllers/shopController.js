@@ -9,6 +9,8 @@ export const getAllProducts = catchAsync(async (req, res, next) => {
     req.query
   );
 
+  console.log(req.query)
+
   features.filter().sort().fields().paginator().search();
   const docs = await features.query;
 
@@ -17,10 +19,10 @@ export const getAllProducts = catchAsync(async (req, res, next) => {
     docs.forEach((el) => {
       if (
         inDistance(
-          el.location.lat,
-          el.location.long,
-          req.body.location.lat,
-          req.body.location.long,
+          el.lat,
+          el.long,
+          req.body.lat,
+          req.body.long,
           req.query.distance
         )
       )
@@ -61,10 +63,8 @@ export const getUserProducts = catchAsync(async (req, res, next) => {
 export const getBoughtProducts = catchAsync(async (req, res, next) => {
   const features = new APIFeatures(
     Product.find({
-      productHistory: {
         isPurchased: true,
         purchasedBy: req.user.id,
-      },
     }),
     req.query
   );

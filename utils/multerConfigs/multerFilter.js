@@ -9,7 +9,7 @@ export const multerProfilePicFilter = (req, file, cb) => {
 };
 
 export const multerProductImgFilter = (req, file, cb) => {
-  if (file.fieldname === 'image') {
+  if (file.fieldname === 'images') {
     if (file.mimetype.startsWith('image')) cb(null, true);
     else cb(new AppError('Only image files are allowed', 400), false);
   } else cb(new AppError('Invalid input', 400), false);

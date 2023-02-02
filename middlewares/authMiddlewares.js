@@ -47,7 +47,7 @@ export const userProductProtect = catchAsync(async (req, res, next) => {
       `Non-modifying user entry attempt. \nAttempting User: ${req.user.id}\nTrying to access: ${req.user.userID}\nAction: ${req.originalUrl}`
     );
     return next(
-      AppError('You do not have the permission to perform this action', 403)
+      new AppError('You do not have the permission to perform this action', 403)
     );
   }
   next();

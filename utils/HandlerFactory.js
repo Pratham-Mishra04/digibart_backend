@@ -55,7 +55,7 @@ export const getAllDocsByUser = (Model) =>
 export const getDoc = (Model) =>
   catchAsync(async (req, res, next) => {
     const doc =
-      Model == User
+      Model === User
         ? await Model.findById(req.params.userID)
         : await Model.findById(req.params.id);
     if (!doc) return next(new AppError('No document of this ID found', 401));
@@ -92,10 +92,16 @@ export const createDoc = (Model) =>
 
 export const updateDoc = (Model) =>
   catchAsync(async (req, res, next) => {
-    const doc = await Model.findByIdAndUpdate(req.params.id, req.body, {
-      new: true,
-      runValidators: true,
-    });
+    const doc =
+      Model === User
+        ? await Model.findByIdAndUpdate(req.params.userID, req.body, {
+            new: true,
+            runValidators: true,
+          })
+        : await Model.findByIdAndUpdate(req.params.id, req.body, {
+            new: true,
+            runValidators: true,
+          });
 
     if (!doc) return next(new AppError('No document of this ID found', 401));
 

@@ -22,4 +22,4 @@ const productImgUpload = multer({
 
 export const profilePicUploadParserer = profilePicUpload.single('profilePic');
 
-export const productImgUploadParserer = productImgUpload.any('image');
+export const productImgUploadParserer = productImgUpload.any('images');

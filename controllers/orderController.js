@@ -1,6 +1,7 @@
 import catchAsync from '../managers/catchAsync';
 import Order from '../models/orderModel';
 import AppError from '../managers/AppError.js';
+import Product from '../models/productModel';
 
 export const placeOrder = catchAsync(async (req, res, next) => {
   const order = await Order.create({
@@ -76,16 +77,32 @@ export const declineOrder = catchAsync(async (req, res, next) => {
 });
 
 export const receiveOrder = catchAsync(async (req, res, next) => {
-    // add order user checker
+  // add order user checker
   const order = await Order.findById(req.params.orderID);
-  if (order.status !== 'received' && order.status!=='accepted')
+  if (order.status !== 'received' && order.status !== 'accepted')
     return next(new AppError('You Cannot Perfom this Action.'));
   if (order.listedBy == req.user.id) order.receivedByLister = true;
   else order.receivedByPlacer = true;
 
-  if (order.receivedByLister && order.receivedByPlacer)
+  if (order.receivedByLister && order.receivedByPlacer) {
     order.status = 'completed';
-  else order.status = 'received';
+
+    order.productsByLister.forEach(async (el) => {
+      await Product.findByIdAndUpdate(el, {
+        isPurchased: true,
+        purchasedAt: Date.now(),
+        purchasedBy: order.placedBy,
+      });
+    });
+
+    order.productsByPlacer.forEach(async (el) => {
+      await Product.findByIdAndUpdate(el, {
+        isPurchased: true,
+        purchasedAt: Date.now(),
+        purchasedBy: order.listedBy,
+      });
+    });
+  } else order.status = 'received';
 
   await order.save();
 
