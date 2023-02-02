@@ -25,6 +25,10 @@ const productSchema = new mongoose.Schema({
       ref: 'User',
     },
   },
+  location:{
+    lat:String,
+    long:String
+  }
 });
 
 productSchema.index({ price: 1 });

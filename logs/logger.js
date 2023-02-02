@@ -25,11 +25,14 @@ const errorLogger = createLog('error', 'error');
 
 const infoLogger = createLog('info', 'info');
 
+const newCategoryLogger = createLog('newCategories', 'warn');
+
 const protectLogger = createLog('protect', 'warn');
 
 const logger = {
   info: (log) => infoLogger.info(log),
   error: (log) => errorLogger.error(log),
+  newCategory: (log) => newCategoryLogger.warn(log),
   protect: (log) => protectLogger.warn(log),
 };
 

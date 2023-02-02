@@ -15,14 +15,6 @@ class APIFeatures {
               },
             },
             {
-              tags: {
-                $all: {
-                  $regex: this.queryStr.search,
-                  $options: 'i',
-                },
-              },
-            },
-            {
               category: {
                 $regex: this.queryStr.search,
                 $options: 'i',
