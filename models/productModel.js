@@ -16,6 +16,9 @@ const productSchema = new mongoose.Schema({
   mrp: Number,
   estimatedPrice: Number,
   category: String,
+  tags:[{
+    String
+  }],
   isPurchased: {
     type: Boolean,
     default: false,

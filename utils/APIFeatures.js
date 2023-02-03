@@ -4,6 +4,32 @@ class APIFeatures {
     this.queryStr = queryStr;
   }
 
+  category() {
+    const category = this.queryStr.category
+      ? {
+          category: {
+            $regex: this.queryStr.category,
+            $options: 'i',
+          },
+        }
+      : {};
+    this.query = this.query.find(category);
+    return this;
+  }
+
+  age_of_product() {
+    const age_of_product = this.queryStr.age_of_product
+      ? {
+          age_of_product: {
+            $regex: this.queryStr.age_of_product,
+            $options: 'i',
+          },
+        }
+      : {};
+    this.query = this.query.find(age_of_product);
+    return this;
+  }
+
   search() {
     const search = this.queryStr.search
       ? {
@@ -12,6 +38,14 @@ class APIFeatures {
               title: {
                 $regex: this.queryStr.search,
                 $options: 'i',
+              },
+            },
+            {
+              tags: {
+                $all: {
+                  $regex: this.queryStr.search,
+                  $options: 'i',
+                },
               },
             },
             {

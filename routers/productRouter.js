@@ -10,7 +10,6 @@ import {
 } from '../controllers/productController.js';
 import { productImgUploadParserer } from '../utils/parserers/imageUploadParserer.js';
 import { resizeProductPics } from '../utils/resizePic.js';
-import categoryCheck from '../validators/categoryChecker.js';
 import {
   joiProductCreateValidator,
   joiProductUpdateValidator,
@@ -18,16 +17,13 @@ import {
 
 const productRouter = express.Router();
 
-productRouter
-  .route('/')
-  .post(
-    protect,
-    productImgUploadParserer,
-    joiProductCreateValidator,
-    resizeProductPics,
-    categoryCheck,
-    addProduct
-  );
+productRouter.route('/').post(
+  protect,
+  productImgUploadParserer,
+  joiProductCreateValidator,
+  resizeProductPics,
+  addProduct
+);
 
 productRouter
   .route('/:id')
@@ -35,18 +31,8 @@ productRouter
   .patch(protect, userProductProtect, joiProductUpdateValidator, updateProduct)
   .delete(protect, userProductProtect, deleteProduct);
 
-  productRouter
-  .route('/stack')
-  .post(
-    protect,
-    makeStack
-  );
+productRouter.route('/stack').post(protect, makeStack);
 
-  productRouter
-  .route('/stack/:id')
-  .delete(
-    protect,
-    deleteStack
-  );
+productRouter.route('/stack/:id').delete(protect, deleteStack);
 
 export default productRouter;

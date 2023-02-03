@@ -39,6 +39,7 @@ const orderSchema = new mongoose.Schema(
       type: mongoose.Schema.Types.ObjectId,
         ref: 'Stack',
     },
+    message:String,
     status:{
       type:String,
       enum:['placed', 'canceled', 'accepted', 'declined', 'received', 'completed']

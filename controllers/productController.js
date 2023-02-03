@@ -8,8 +8,17 @@ import {
   createDoc,
   deleteDoc,
 } from '../utils/HandlerFactory.js';
+import AppError from '../managers/AppError.js';
 
-export const getProduct = getDoc(Product);
+export const getProduct =  catchAsync(async (req, res, next) => {
+  const doc = await Product.findById(req.params.id).populate('listedBy');
+  if (!doc) return next(new AppError('No Product of this ID found', 401));
+  res.status(200).json({
+    status: 'success',
+    requestedAt: req.requestedAt,
+    data: doc,
+  });
+});
 
 export const addProduct = createDoc(Product);
 

@@ -41,7 +41,7 @@ export const getAllProducts = catchAsync(async (req, res, next) => {
       status: 'success',
       results: distanceDocs.length,
       requestedAt: req.requestedAt,
-      data: { distanceDocs, filteredStacks },
+      data: { products:distanceDocs, stacks:filteredStacks },
     });
   } else {
     const filteredStacks = [];
@@ -57,14 +57,14 @@ export const getAllProducts = catchAsync(async (req, res, next) => {
       status: 'success',
       results: docs.length,
       requestedAt: req.requestedAt,
-      data: { docs, filteredStacks },
+      data: { products:docs, stacks:filteredStacks },
     });
   }
 });
 
 export const getUserProducts = catchAsync(async (req, res, next) => {
   const features = new APIFeatures(
-    Product.find({ listedBy: req.user.id }),
+    Product.find({ listedBy: req.params.id }),
     req.query
   );
 
@@ -84,7 +84,7 @@ export const getUserProducts = catchAsync(async (req, res, next) => {
     status: 'success',
     results: products.length,
     requestedAt: req.requestedAt,
-    data: { products, filteredStacks },
+    data: { products, stacks:filteredStacks },
   });
 });
 
@@ -107,3 +107,21 @@ export const getBoughtProducts = catchAsync(async (req, res, next) => {
     data: products,
   });
 });
+
+export const getOrderProducts = catchAsync(async(req, res, next)=>{
+  const userProducts = await Product.find({
+    listedBy:req.user.id,
+    isPurchased:false
+  })
+
+  const otherUserProducts = await Product.find({
+    listedBy:req.params.id,
+    isPurchased:false
+  })
+
+  res.status(200).json({
+    status: 'success',
+    requestedAt: req.requestedAt,
+    data: {userProducts,otherUserProducts },
+  });
+})

@@ -11,8 +11,10 @@ const joiProductCreateSchema = Joi.object({
   mrp: Joi.number().required(),
   estimatedPrice:Joi.forbidden(),
   category: Joi.string().required(),
+  tags:Joi.array().items(Joi.string()),
   lat:Joi.string().required(),
   long:Joi.string().required(),
+  age:Joi.number().required(),
   isPurchased: Joi.forbidden(),
   purchasedAt: Joi.forbidden(),
   purchasedBy: Joi.forbidden(),
@@ -24,6 +26,7 @@ const joiProductUpdateSchema = Joi.object({
   description: Joi.string(),
   listedBy: Joi.forbidden(),
   listedAt: Joi.forbidden(),
+  age:Joi.number(),
   mrp: Joi.number(),
   estimatedPrice:Joi.forbidden(),
   category: Joi.string(),
@@ -34,6 +37,7 @@ const joiProductUpdateSchema = Joi.object({
 
 export const joiProductCreateValidator = catchAsync(async (req, res, next) => {
   req.body.listedBy = req.user.id;
+  console.log(req.body.images)
   await joiProductCreateSchema.validateAsync(req.body).catch((error) => {
     if (req.body.images) {
       req.body.images.forEach((loc) => {
